@@ -1,64 +1,35 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import AnimateText from './components/AnimateText';
+import getQuote from './utils/Quote';
+
+import getBrainf from './utils/Brainf';
 
 function App() {
-  const textRef = useRef(null);
-  const codeRef = useRef(null);
+  const [targetStr, setTargetQuote] = useState('');
+  const targetBrainf = useMemo(() => getBrainf(targetStr), [targetStr]);
 
-  const [targetStr, setTargetStr] = useState('Hello World!');
-  const targetBrainf = useMemo(() => {
-    let memo = 0;
-    let newSyntax = '';
-    for (let i = 0; i < targetStr.length; i++) {
-            
-      const asciiCode = targetStr.charCodeAt(i);
-      const different = asciiCode - memo;
-
-      if (different > 0) newSyntax += '+'.repeat(different);
-      else if (different < 0) newSyntax += '-'.repeat(-different);
-      newSyntax += '.';
-
-      memo = asciiCode;
-    }
-
-    return newSyntax;
-  }, [targetStr]);
-
-  const [currentStr, setCurrentStr] = useState('');
-  const [currentBrainf, setCurrentBrainf] = useState('');
-
+  // GET A NEW QUOTE
   useEffect(() => {
-    if (targetStr === currentStr || targetBrainf === currentBrainf) return;
-    console.log('Aktif');
-    
-
-    requestAnimationFrame(() => {
-      const newBrainf = targetBrainf.slice(0, currentBrainf.length + 1);
-      const lastBranf = newBrainf[newBrainf.length - 1];
-      
-      setCurrentBrainf(newBrainf);
-
-      if (lastBranf === '.') {
-        const newStr = targetStr.slice(0, currentStr.length + 1);
-        setCurrentStr(newStr);
-      }
-    });
-  }, [targetStr, targetBrainf, currentStr, currentBrainf]);
+    async function getQuotes() {
+      const newQuote = await getQuote();
+      setTargetQuote(newQuote);
+      setTimeout(getQuotes, 30000);
+    }
+    const animFrame = requestAnimationFrame(getQuotes);
+    return () => cancelAnimationFrame(animFrame);
+  }, []);
 
   return (
-    <div className='flex flex-col items-center justify-center gap-4 p-8 bg-gray-900 text-white w-screen h-screen overflow-hidden transition-all'>
-      <p ref={textRef} className='font-mono font-semibold text-2xl transition-all'> 
-        { currentStr.split('').map((char, ind) => 
-          <span key={ind} className='animate-fade inline-block'> 
-            {char === ' ' ? '\u00A0' : char}
-          </span>
-        )}  
-      </p>
-      <code className="break-all transition-all">
-        { currentBrainf.split('').map((char, ind) => 
-          <span key={ind} className='animate-fade animate-duration-[50ms] inline-block'> 
-            {char === ' ' ? '\u00A0' : char}
-          </span>
-        )}  
+    <div className='relative p-8 bg-gray-900 text-white w-screen h-screen overflow-hidden'>
+      <code className='absolute flex flex-row flex-wrap justify-center items-center inset-0 font-semibold text-2xl p-30 z-50'> 
+        <div className='drop-shadow-[0px_0px_3px_rgba(255,255,255,0.5)]'>
+          <AnimateText text={targetStr} splitBy=' ' delay={10} />
+        </div>
+      </code>
+      <code className='absolute flex justify-center items-center inset-0 p-10 opacity-10 break-all'>
+        <div>
+          <AnimateText text={targetBrainf} splitBy='.' delay={10} />
+        </div>
       </code>
     </div>
   )
