@@ -21,7 +21,7 @@ async function getFromQuotableIo() {
  */
 async function getFromPremKR() {
     try {
-        const fetchData = await fetch("/PremKR.json");
+        const fetchData = await fetch(import.meta.env.BASE_URL + "/PremKR.json");
         const json = await fetchData.json();
 
         const selected = Math.floor(Math.random() * json.length);

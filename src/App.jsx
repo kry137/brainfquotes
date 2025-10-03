@@ -20,13 +20,13 @@ function App() {
   }, []);
 
   return (
-    <div className='relative p-8 bg-gray-900 text-white w-screen h-screen overflow-hidden'>
-      <code className='absolute flex flex-row flex-wrap justify-center items-center inset-0 font-semibold text-2xl p-30 z-50'> 
+    <div className='relative bg-gray-900 text-white w-screen h-screen overflow-hidden'>
+      <code className='absolute flex flex-row flex-wrap justify-center items-center inset-0 font-semibold text-2xl px-30 z-50'> 
         <div className='drop-shadow-[0px_0px_3px_rgba(255,255,255,0.5)]'>
           <AnimateText text={targetStr} splitBy=' ' delay={10} />
         </div>
       </code>
-      <code className='absolute flex justify-center items-center inset-0 p-10 opacity-10 break-all'>
+      <code className='absolute flex justify-center items-center inset-0 px-10 opacity-10 break-all'>
         <div>
           <AnimateText text={targetBrainf} splitBy='.' delay={10} />
         </div>
