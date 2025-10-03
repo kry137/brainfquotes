@@ -26,7 +26,7 @@ function App() {
           <AnimateText text={targetStr} splitBy=' ' delay={10} />
         </div>
       </code>
-      <code className='absolute flex justify-center items-center inset-0 px-10 opacity-20 break-all'>
+      <code className='absolute flex justify-center items-center inset-0 px-10 opacity-20 dark:opacity-10 break-all'>
         <div>
           <AnimateText text={targetBrainf} splitBy='.' delay={10} />
         </div>
