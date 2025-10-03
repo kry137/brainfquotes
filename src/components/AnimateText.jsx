@@ -15,7 +15,7 @@ export default function AnimateText({ text, splitBy='', delay=5 }) {
     return (
         <>
             { splitted.map((text, i) => 
-                    <span key={i+'-'+text} className="animate-flip-up inline-block"
+                    <span key={i+'-'+text} className="motion-safe:animate-flip-up inline-block"
                         style={{ animationDelay: delay * i + 'ms' }}
                     >
                         {text.replace(' ', '\u00A0') }
